@@ -1,23 +1,17 @@
 (ns advent-of-code-2018.day-1
-  (:require [advent-of-code-2018.inputs :as inputs]
-            [clojure.string :as string]))
+  (:require [advent-of-code-2018.inputs :as inputs]))
 
 
-(def input (inputs/get-input-for-day 1))
+(defn input [] (inputs/read-longs (inputs/get-input-for-day 1)))
 
 ; Part 1
 
-(defn read-input
-  [input]
-  (->> input
-       string/split-lines
-       (map #(Long/parseLong %))))
 
 (defn freq-sum
   [ints]
   (apply + ints))
 
-(def answer-1 (freq-sum (read-input input)))
+(defn answer-1 [] (freq-sum (input)))
 
 
 ; Part 2
@@ -37,5 +31,4 @@
                  new-freq
                  (rest cur-ints)))))))
 
-
-(def answer-2 (detect-first-dup (read-input input)))
+(defn answer-2 [] (detect-first-dup (input)))
