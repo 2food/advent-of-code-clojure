@@ -1,6 +1,7 @@
 (ns advent-of-code-2018.day-3
   (:require [advent-of-code-2018.inputs :as inputs]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [clojure.set :as set]))
 
 
 (defn input [] (inputs/lines (inputs/get-input-for-day 3)))
@@ -27,12 +28,30 @@
                  [x y])]
     (assoc claim :coords coords)))
 
+(defn claims [] (map (comp calc-coords read-claim) (input)))
+
 (defn count-covers
   [claims]
   (reduce (fn [acc {cs :coords}] (merge-with + acc (zipmap cs (repeat 1))))
           {}
           claims))
 
-(defn santa-cloth-claims [] (count-covers (map (comp calc-coords read-claim) (input))))
+(defn santa-cloth-claims [] (count-covers (claims)))
 
-(defn answer-1 [] (count (filter (fn [[k v]] (when (> v 1) k)) (santa-cloth-claims))))
+(defn overlapping-coords [] (filter (fn [[k v]] (when (> v 1) k)) (santa-cloth-claims)))
+
+(defn answer-1 [] (count (overlapping-coords)))
+
+
+; Part 2
+
+
+(defn find-not-overlapping
+  [overlapping claims]
+  (let [overlapping-set (set (keys overlapping))]
+    (some (fn [{:keys [id coords]}]
+            (when (empty? (set/intersection overlapping-set (set coords)))
+              id))
+          claims)))
+
+(defn answer-2 [] (find-not-overlapping (overlapping-coords) (claims)))
