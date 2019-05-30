@@ -6,7 +6,7 @@
   [n]
   (slurp (str "resources/inputs/day" n ".txt")))
 
-(defn longs
+(defn read-longs
   [input]
   (->> input
        string/split-lines

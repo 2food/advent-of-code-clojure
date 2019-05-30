@@ -55,3 +55,7 @@
           claims)))
 
 (defn answer-2 [] (find-not-overlapping (overlapping-coords) (claims)))
+
+(comment
+  (answer-2)
+  )

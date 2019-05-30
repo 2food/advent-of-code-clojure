@@ -2,7 +2,7 @@
   (:require [advent-of-code-2018.inputs :as inputs]))
 
 
-(defn input [] (inputs/longs (inputs/get-input-for-day 1)))
+(defn input [] (inputs/read-longs (inputs/get-input-for-day 1)))
 
 ; Part 1
 
