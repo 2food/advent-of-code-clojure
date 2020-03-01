@@ -1,4 +1,4 @@
-(ns advent-of-code-2018.core
+(ns advent-of-code-clojure.core
   (:gen-class))
 
 (defn -main

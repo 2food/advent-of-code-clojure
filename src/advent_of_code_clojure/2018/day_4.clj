@@ -1,9 +1,9 @@
-(ns advent-of-code-2018.day-4
-  (:require [advent-of-code-2018.inputs :as inputs]
+(ns advent-of-code-clojure.2018.day-4
+  (:require [advent-of-code-clojure.inputs :as inputs]
             [clojure.string :as string]
             [clj-time.format :as f]))
 
-(defn markings [] (sort (inputs/lines (inputs/get-input-for-day 4))))
+(defn markings [] (sort (inputs/lines (inputs/get-input-for-day 2018 4))))
 
 (comment
   (map println (markings)))

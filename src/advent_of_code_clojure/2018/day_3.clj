@@ -1,10 +1,10 @@
-(ns advent-of-code-2018.day-3
-  (:require [advent-of-code-2018.inputs :as inputs]
+(ns advent-of-code-clojure.2018.day-3
+  (:require [advent-of-code-clojure.inputs :as inputs]
             [clojure.string :as string]
             [clojure.set :as set]))
 
 
-(defn input [] (inputs/lines (inputs/get-input-for-day 3)))
+(defn input [] (inputs/lines (inputs/get-input-for-day 2018 3)))
 
 
 ; Part 1

@@ -1,8 +1,8 @@
-(ns advent-of-code-2018.day-1
-  (:require [advent-of-code-2018.inputs :as inputs]))
+(ns advent-of-code-clojure.2018.day-1
+  (:require [advent-of-code-clojure.inputs :as inputs]))
 
 
-(defn input [] (inputs/read-longs (inputs/get-input-for-day 1)))
+(defn input [] (inputs/read-longs (inputs/get-input-for-day 2018 1)))
 
 ; Part 1
 

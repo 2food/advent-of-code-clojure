@@ -1,10 +1,10 @@
-(ns advent-of-code-2018.inputs
+(ns advent-of-code-clojure.inputs
   (:require [clojure.string :as string]))
 
 
 (defn get-input-for-day
-  [n]
-  (slurp (str "resources/inputs/day" n ".txt")))
+  [year n]
+  (slurp (str "resources/inputs/" year "/day" n ".txt")))
 
 (defn read-longs
   [input]
