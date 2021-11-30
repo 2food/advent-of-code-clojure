@@ -43,7 +43,7 @@
       (= (first stringa) (first stringb)) (recur n
                                                  (string/join (rest stringa))
                                                  (string/join (rest stringb)))
-      true (recur (- n 1)
+      :else (recur (- n 1)
                   (string/join (rest stringa))
                   (string/join (rest stringb))))))
 
