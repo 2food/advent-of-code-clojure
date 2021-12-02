@@ -5,7 +5,8 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [clj-time "0.15.0"]
-                 [org.clojure/math.numeric-tower "0.0.4"]]
+                 [org.clojure/math.numeric-tower "0.0.4"]
+                 [clj-http "3.12.3"]]
   :main ^:skip-aot advent-of-code-clojure.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
