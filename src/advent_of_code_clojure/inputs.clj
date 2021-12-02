@@ -15,3 +15,11 @@
 (defn lines
   [input]
   (string/split-lines input))
+
+(defn words [input]
+  (string/split input #" "))
+
+(defn lines-and-words [input]
+  (->> input
+      (lines)
+    (map words)))
