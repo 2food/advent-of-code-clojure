@@ -43,15 +43,21 @@
 (defn transpose [m]
   (apply mapv vector m))
 
+(defn any-winning-rows? [drawn board]
+  (->> board
+       (some #(every? drawn %))
+       (boolean)))
+
+(defn any-winning-columns? [drawn board]
+  (->> board
+       (transpose)
+       (some #(every? drawn %))
+       (boolean)))
+
 (defn winner? [drawn board]
   (let [drawn (set drawn)]
-    (when (or (->> board
-                   (some #(every? drawn %))
-                   (boolean))
-              (->> board
-                   (transpose)
-                   (some #(every? drawn %))
-                   (boolean)))
+    (when (or (any-winning-rows? drawn board)
+              (any-winning-columns? drawn board))
       board)))
 
 (comment (assert (winner? [67 57 2 21 19] example-board))
