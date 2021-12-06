@@ -29,29 +29,33 @@
 (defn h-or-v? [line]
   (filter (some-fn horizontal? vertical?) line))
 
+(defn bidir-range-line [a b]
+  (if (> b a)
+    (range a (inc b))
+    (reverse (range b (inc a)))))
+
 (defn populate-area [line]
   (let [[[x1 y1] [x2 y2]] line
-        xs (if (> x2 x1) 
-             (range x1 (inc x2))
-             (range x2 (inc x1)))
-        ys (if (> y2 y1) 
-             (range y1 (inc y2))
-             (range y2 (inc y1)))]
+        xs (bidir-range-line x1 x2)
+        ys (bidir-range-line y1 y2)]
     (for [x xs y ys]
       [x y])))
 
-(defn count-positions [lines]
-  (frequencies (reduce into (mapv populate-area lines))))
+(defn count-positions [positions]
+  (frequencies (reduce into positions)))
 
-(defn duplicate-positions [lines]
+(defn duplicate-positions [positions]
   (reduce-kv (fn [acc k v] (if (> v 1)
                              (conj acc k)
                              acc))
              []
-             (count-positions lines)))
+             (count-positions positions)))
 
 (defn answer1 [inp]
-  (count (duplicate-positions (h-or-v? inp))))
+  (->> (h-or-v? inp)
+       (mapv populate-area)
+       (duplicate-positions)
+       (count)))
 
 (def example-input
   (-> "0,9 -> 5,9
@@ -69,3 +73,30 @@
 (comment  (answer1 example-input)
           (answer1 (input)))
 ; Answer = 6687
+
+
+; Part 2
+
+(defn diagonal? [line]
+  (let [[[x1 y1] [x2 y2]] line]
+    (= (Math/abs (- x1 x2)) (Math/abs (- y1 y2)))))
+
+(defn h-or-v-or-d? [line]
+  (filter (some-fn horizontal? vertical? diagonal?) line))
+
+(defn populate-line [line]
+  (if (diagonal? line)
+    (let [[[x1 y1] [x2 y2]] line
+          xs (bidir-range-line x1 x2)
+          ys (bidir-range-line y1 y2)]
+      (mapv vector xs ys))
+    (populate-area line)))
+
+(defn answer2 [inp]
+  (->> (h-or-v-or-d? inp)
+       (mapv populate-line)
+       (duplicate-positions)
+       (count)))
+
+(comment (answer2 (input)))
+; Answer = 19851
