@@ -27,5 +27,33 @@
         fish
         (recur (inc day) fish)))))
 
-(count (simulate (input) 80))
+(comment
+ (count (simulate (input) 80)))
 ; Answer = 350917
+
+
+; Part 2
+
+(defn to-index [inp]
+  (into (->> (frequencies (input))
+             (into [[0 0]])
+             (sort)
+             (mapv second))
+        [0 0 0]))
+
+(defn simulate-day-2 [lanternfish]
+  (let [new-fish (first lanternfish)]
+    (-> (rest lanternfish)
+        (vec)
+        (update 6 (partial + new-fish))
+        (conj new-fish))))
+
+(defn simulate-2 [lanternfish end-day]
+  (loop [day 1
+         fish lanternfish]
+    (let [fish (simulate-day-2 fish)]
+      (if (= day end-day)
+        fish
+        (recur (inc day) fish)))))
+
+(reduce + (simulate-2 (to-index (input)) 256))
