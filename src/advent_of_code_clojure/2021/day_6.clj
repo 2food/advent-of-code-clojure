@@ -28,7 +28,7 @@
         (recur (inc day) fish)))))
 
 (comment
- (count (simulate (input) 80)))
+  (count (simulate (input) 80)))
 ; Answer = 350917
 
 
@@ -56,4 +56,6 @@
         fish
         (recur (inc day) fish)))))
 
-(reduce + (simulate-2 (to-index (input)) 256))
+(comment
+  (reduce + (simulate-2 (to-index (input)) 256)))
+; Answer = 1592918715629
