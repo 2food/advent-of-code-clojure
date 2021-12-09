@@ -47,17 +47,15 @@
 (comment
   (is-low-point? test-input 6 4))
 
-(defn find-all-low-points [m]
+(defn all-coords [m]
   (let [xrange (range 0 (count (first m)))
         yrange (range 0 (count m))]
-    (reduce
-     (fn [acc [x y]]
-       (if (is-low-point? m x y)
-         (conj acc [x y])
-         acc))
-     []
-     (for [x xrange y yrange]
-       [x y]))))
+    (for [x xrange y yrange]
+      [x y])))
+
+(defn find-all-low-points [m]
+  (filter (fn [[x y]] (is-low-point? m x y))
+          (all-coords m)))
 
 (comment
   (find-all-low-points test-input))
@@ -98,5 +96,5 @@
        (take 3)
        (reduce *)))
 
-(comment 
+(comment
   (mult-top-3-basins (input)))
