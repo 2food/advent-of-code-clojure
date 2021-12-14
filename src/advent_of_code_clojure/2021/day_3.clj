@@ -2,7 +2,7 @@
   (:require [advent-of-code-clojure.inputs :as inputs]
             [clojure.string :as string]))
 
-(defn input []
+(def input
   (-> (inputs/get-input-for-day 2021 3)
       (inputs/lines)))
 
@@ -35,8 +35,8 @@
     [gamma epsilon]))
 
 (comment
-  (get-rates-1 (input))
-  (apply * (get-rates-1 (input))))
+  (get-rates-1 input)
+  (apply * (get-rates-1 input)))
 ; Answer = 3958484
 
 
@@ -68,6 +68,6 @@
     (= (get-rates-2 sample) [23 10])))
 
 (comment
-  (get-rates-2 (input))
-  (apply * (get-rates-2 (input))))
+  (get-rates-2 input)
+  (apply * (get-rates-2 input)))
 ; Answer = 1613181

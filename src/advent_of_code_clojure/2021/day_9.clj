@@ -8,9 +8,16 @@
        (mapv #(->> (string/split % #"")
                    (mapv read-string)))))
 
-(defn input []
+(def input
   (-> (inputs/get-input-for-day 2021 9)
       (parse-input)))
+
+(def test-input
+  (parse-input "2199943210
+3987894921
+9856789892
+8767896789
+9899965678"))
 
 
 ; Part 1
@@ -37,13 +44,6 @@
          (map (fn [[x y]] (get-coord m x y)))
          (every? #(< this %)))))
 
-(def test-input
-  (parse-input "2199943210
-3987894921
-9856789892
-8767896789
-9899965678"))
-
 (comment
   (is-low-point? test-input 6 4))
 
@@ -69,7 +69,7 @@
          (map (fn [[x y]] (risk-level m x y)))
          (reduce +))))
 
-(comment (risk-of-all-low-points (input)))
+(comment (risk-of-all-low-points input))
 ; Answer = 456
 
 
@@ -97,4 +97,5 @@
        (reduce *)))
 
 (comment
-  (mult-top-3-basins (input)))
+  (mult-top-3-basins input))
+; Answer = 1047744

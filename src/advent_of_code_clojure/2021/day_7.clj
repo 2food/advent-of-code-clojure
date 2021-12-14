@@ -6,7 +6,7 @@
   (->> (string/split s #"[,\n]")
        (mapv read-string)))
 
-(defn input []
+(def input
   (-> (inputs/get-input-for-day 2021 7)
       (parse-input)))
 
@@ -30,7 +30,7 @@
           (recur (inc n) m))))))
 
 (comment
-  (find-nearest-point (input)))
+  (find-nearest-point input))
 ; Answer = 353800
 
 
@@ -58,5 +58,5 @@
           (recur (inc n) m))))))
 
 (comment
-  (find-nearest-point-2 (input)))
+  (find-nearest-point-2 input))
 ; Answer = 98119739

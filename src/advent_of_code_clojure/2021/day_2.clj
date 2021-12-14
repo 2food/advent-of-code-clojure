@@ -1,7 +1,7 @@
 (ns advent-of-code-clojure.2021.day-2
   (:require [advent-of-code-clojure.inputs :as inputs]))
 
-(defn input []
+(def input
   (->>
    (inputs/get-input-for-day 2021 2)
    (inputs/lines-and-words)
@@ -21,7 +21,7 @@
   (reduce adjust-pos [0 0] instructions))
 
 (comment 
-  (let [pos (compute-position (input))]
+  (let [pos (compute-position input)]
     (* (first pos) (second pos))))
 ; Answer = 1746616
 
@@ -40,6 +40,6 @@
   (reduce adjust-pos-2 [0 0 0] instructions))
 
 (comment
-  (let [pos (compute-position-2 (input))]
+  (let [pos (compute-position-2 input)]
     (* (first pos) (second pos))))
 ; Answer = 1741971043

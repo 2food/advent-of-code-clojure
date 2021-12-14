@@ -5,11 +5,21 @@
   (->> s
        (inputs/lines)))
 
-(defn input []
+(def input
   (-> (inputs/get-input-for-day 2021 10)
       (parse-input)))
 
-(input)
+(def test-input
+  (parse-input "[({(<(())[]>[[{[]{<()<>>
+[(()[<>])]({[<{<<[]>>(
+{([(<{}[<>[]}>{[]{[(<()>
+(((({<>}<{<{<>}{[]{[]{}
+[[<[([]))<([[{}[[()]]]
+[{[{({}]{}}([{[{{{}}([]
+{<[[]]>}<{[{[{[]{()[[[]
+[<(<(<(<{}))><([]([]()
+<{([([[(<>()){}]>(<<{{
+<{([{{}}[<[[[<>{}]]]>[]]"))
 
 ; Part 1
 
@@ -48,25 +58,13 @@
         (= x (opposite (first stack))) (recur (rest stack) (rest line))
         :else x))))
 
-(def test-input
-  (parse-input "[({(<(())[]>[[{[]{<()<>>
-[(()[<>])]({[<{<<[]>>(
-{([(<{}[<>[]}>{[]{[(<()>
-(((({<>}<{<{<>}{[]{[]{}
-[[<[([]))<([[{}[[()]]]
-[{[{({}]{}}([{[{{{}}([]
-{<[[]]>}<{[{[{[]{()[[[]
-[<(<(<(<{}))><([]([]()
-<{([([[(<>()){}]>(<<{{
-<{([{{}}[<[[[<>{}]]]>[]]"))
-
 (defn find-all-corrupted [lines]
   (->> (map find-corrupted lines)
        (filterv some?)))
 
 (comment
   (score (find-all-corrupted test-input))
-  (score (find-all-corrupted (input))))
+  (score (find-all-corrupted input)))
 ; Answer = 388713
 
 
@@ -83,7 +81,7 @@
        (filter some?)))
 
 (defn input-wo-corruption []
-  (wo-corruption (input)))
+  (wo-corruption input))
 
 (def test-input-wo-corruption
   (wo-corruption test-input))
@@ -121,5 +119,6 @@
         scores (score-all-completions inp)]
     (nth scores (int (/ n 2)))))
 
-(final-score (input-wo-corruption))
+(comment
+  (final-score (input-wo-corruption)))
 ; Answer = 3539961434

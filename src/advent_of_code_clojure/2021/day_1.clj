@@ -1,7 +1,8 @@
 (ns advent-of-code-clojure.2021.day-1
   (:require [advent-of-code-clojure.inputs :as inputs]))
 
-(defn input [] (inputs/read-longs (inputs/get-input-for-day 2021 1)))
+(def input  
+  (inputs/read-longs (inputs/get-input-for-day 2021 1)))
 
 ; Part 1
 
@@ -16,7 +17,7 @@
   (count (filter identity (greater-than-prev? nums))))
 
 (comment
-  (n-greater-than-prev (input)))
+  (n-greater-than-prev input))
 ; Answer = 1754
 
 
@@ -30,5 +31,5 @@
 
 (comment
   (sum-sliding-windows [1 2 2 4 1])
-  (n-greater-than-prev (sum-sliding-windows (input))))
+  (n-greater-than-prev (sum-sliding-windows input)))
 ; Answer = 1789

@@ -12,9 +12,22 @@
        (map #(string/split % #" -> "))
        (mapv (partial mapv read-point))))
 
-(defn input []
+(def input
   (->> (inputs/get-input-for-day 2021 5)
        (parse-input)))
+
+(def test-input
+  (-> "0,9 -> 5,9
+8,0 -> 0,8
+9,4 -> 3,4
+2,2 -> 2,1
+7,0 -> 7,4
+6,4 -> 2,0
+0,9 -> 2,9
+3,4 -> 1,4
+0,0 -> 8,8
+5,5 -> 8,2"
+      (parse-input)))
 
 ; Part 1
 
@@ -57,21 +70,8 @@
        (duplicate-positions)
        (count)))
 
-(def example-input
-  (-> "0,9 -> 5,9
-8,0 -> 0,8
-9,4 -> 3,4
-2,2 -> 2,1
-7,0 -> 7,4
-6,4 -> 2,0
-0,9 -> 2,9
-3,4 -> 1,4
-0,0 -> 8,8
-5,5 -> 8,2"
-      (parse-input)))
-
-(comment  (answer1 example-input)
-          (answer1 (input)))
+(comment  (answer1 test-input)
+          (answer1 input))
 ; Answer = 6687
 
 
@@ -98,5 +98,5 @@
        (duplicate-positions)
        (count)))
 
-(comment (answer2 (input)))
+(comment (answer2 input))
 ; Answer = 19851

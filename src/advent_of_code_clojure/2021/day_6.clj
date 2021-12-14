@@ -6,8 +6,11 @@
   (->> (string/split s #"[,\n]")
        (mapv read-string)))
 
-(defn input []
+(def input
   (parse-input (inputs/get-input-for-day 2021 6)))
+
+
+; Part 1
 
 (defn simulate-day [lanternfish]
   (reduce (fn [acc fish]
@@ -28,7 +31,7 @@
         (recur (inc day) fish)))))
 
 (comment
-  (count (simulate (input) 80)))
+  (count (simulate input 80)))
 ; Answer = 350917
 
 
@@ -57,5 +60,5 @@
         (recur (inc day) fish)))))
 
 (comment
-  (reduce + (simulate-2 (to-index (input)) 256)))
+  (reduce + (simulate-2 (to-index input) 256)))
 ; Answer = 1592918715629

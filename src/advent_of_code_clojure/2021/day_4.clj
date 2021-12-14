@@ -20,7 +20,7 @@
        (filter (partial not= '("")))
        (mapv read-board)))
 
-(defn input []
+(def input
   (let [all-input (-> (inputs/get-input-for-day 2021 4)
                       (inputs/lines))
         drawn-nums (read-drawn all-input)
@@ -29,7 +29,7 @@
      :boards boards}))
 
 (comment
-  (pp/pprint (:boards (input))))
+  (pp/pprint (:boards input)))
 
 ; Part 1
 
@@ -82,7 +82,7 @@
         (recur (inc n))))))
 
 (comment
-  (let [{:keys [drawn-nums boards]} (input)]
+  (let [{:keys [drawn-nums boards]} input]
     (find-first-winner boards drawn-nums)))
 ; Answer = 58835
 
@@ -102,6 +102,6 @@
           (recur (inc n) boards))))))
 
 (comment
-  (let [{:keys [drawn-nums boards]} (input)]
+  (let [{:keys [drawn-nums boards]} input]
     (find-last-winner boards drawn-nums)))
 ; Answer = 6256

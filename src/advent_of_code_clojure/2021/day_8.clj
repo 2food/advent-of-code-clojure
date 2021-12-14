@@ -11,9 +11,23 @@
                (mapv (comp string/join sort) (rest (inputs/words output)))]))
           lines)))
 
-(defn input []
+(def input
   (-> (inputs/get-input-for-day 2021 8)
       (parse-input)))
+
+(def test-input
+  (parse-input
+   "be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
+edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc
+fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg
+fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb
+aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | gecf egdcabf bgf bfgea
+fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | gebdcfa ecba ca fadegcb
+dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbcadfe
+bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef
+egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
+gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce"))
+
 
 ; Part 1
 
@@ -51,20 +65,6 @@
 (defn sum-of-counts [inp]
   (apply (partial merge-with +) (count-chars inp)))
 
-
-(def test-input
-  (parse-input
-   "be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
-edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc
-fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg
-fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb
-aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | gecf egdcabf bgf bfgea
-fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | gebdcfa ecba ca fadegcb
-dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbcadfe
-bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef
-egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
-gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce"))
-
 (comment
   test-input
   (determine-chars test-input)
@@ -72,8 +72,8 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
   (reduce + (vals (select-keys (sum-of-counts test-input) [1 4 7 8]))))
 
 (comment
-  (map #(select-keys % [1 4 7 8]) (count-chars (input)))
-  (reduce + (vals (select-keys (sum-of-counts (input)) [1 4 7 8]))))
+  (map #(select-keys % [1 4 7 8]) (count-chars input))
+  (reduce + (vals (select-keys (sum-of-counts input) [1 4 7 8]))))
 ; Answer = 456
 
 
@@ -156,6 +156,6 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
   (reduce + (find-output test-input)))
 
 (comment 
-  (find-output (input))
-  (reduce + (find-output (input))))
-; Answer = 892880
+  (find-output input)
+  (reduce + (find-output input)))
+; Answer = 1091609
