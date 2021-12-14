@@ -35,7 +35,7 @@
 ; Part 2
 
 (defn to-index [inp]
-  (into (->> (frequencies (input))
+  (into (->> (frequencies inp)
              (into [[0 0]])
              (sort)
              (mapv second))

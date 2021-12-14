@@ -1,6 +1,5 @@
 (ns advent-of-code-clojure.2021.day-10
-  (:require [advent-of-code-clojure.inputs :as inputs]
-            [clojure.string :as string]))
+  (:require [advent-of-code-clojure.inputs :as inputs]))
 
 (defn parse-input [s]
   (->> s
