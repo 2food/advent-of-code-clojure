@@ -1,6 +1,7 @@
 (ns advent-of-code-clojure.2021.day-13
   (:require [advent-of-code-clojure.inputs :as inputs]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [clojure.pprint :as pprint]))
 
 (defn printr [x]
   (println x)
@@ -15,8 +16,8 @@
                    (printr)
                    (inputs/lines)
                    (mapv #(if (re-find #"x" %)
-                           ["x" (read-string (last (string/split % #"=")))]
-                           ["y" (read-string (last (string/split % #"=")))])))]
+                            ["x" (read-string (last (string/split % #"=")))]
+                            ["y" (read-string (last (string/split % #"=")))])))]
     [(set dots) folds]))
 
 (def input
@@ -73,3 +74,26 @@ fold along x=5"))
          (count (foldx (first input) 655)))
 ; Answer = 818
 
+(defn fold-all [[dots folds]]
+  (reduce (fn [dots [dir line]]
+            (let [foldfn ({"x" foldx "y" foldy} dir)]
+              (foldfn dots line)))
+          dots
+          folds))
+
+(defn draw-dots [dots]
+  (let [sizex (inc (apply max (map first dots)))
+        sizey (inc (apply max (map second dots)))
+        emptymap  (vec (for [y (range sizey)]
+                         (vec (for [x (range sizex)] "."))))]
+    (->> (reduce (fn [m [x y]]
+                   (assoc-in m [y x] "#"))
+                 emptymap
+                 dots)
+         (map (partial string/join " "))
+         (string/join "\n"))))
+
+(comment
+  (println (draw-dots (fold-all test-input)))
+  (println (draw-dots (fold-all input))))
+; Answer = LRGPRECB
