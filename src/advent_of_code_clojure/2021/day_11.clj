@@ -86,3 +86,18 @@
   (pprint/pprint (simulate test-input 100))
   (pprint/pprint (simulate input 100)))
 ; Answer = 1588
+
+
+; Part 2
+
+(defn find-first-sync [m]
+  (loop [m m
+         c 1]
+    (let [[newm nflashed] (step m)]
+      (if (= nflashed (count (flatten m)))
+        c
+        (recur newm (inc c))))))
+
+(comment 
+  (find-first-sync test-input)
+  (find-first-sync input))
