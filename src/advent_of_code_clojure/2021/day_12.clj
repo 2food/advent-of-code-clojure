@@ -46,8 +46,9 @@ b-end"))
      (grow-path cave-map path valid-node?)))
   ([cave-map path valid-fn]
    (when (not-end? (last path))
-     (when-let [next-nodes (filter valid-fn (cave-map (last path)))]
-       (mapv #(conj path %) next-nodes)))))
+     (let [alternatives (cave-map (last path))]
+       (when-let [next-nodes (filter valid-fn alternatives)]
+         (mapv #(conj path %) next-nodes))))))
 
 (defn valid-paths [paths]
   (filter #(= (last %) "end") paths))
