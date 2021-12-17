@@ -1,11 +1,6 @@
 (ns advent-of-code-clojure.2021.day-13
   (:require [advent-of-code-clojure.inputs :as inputs]
-            [clojure.string :as string]
-            [clojure.pprint :as pprint]))
-
-(defn printr [x]
-  (println x)
-  x)
+            [clojure.string :as string]))
 
 (defn parse-input [s]
   (let [[dots folds] (string/split s #"\n\n")
@@ -13,7 +8,6 @@
                   (inputs/lines)
                   (mapv #(mapv read-string (string/split % #","))))
         folds (->> folds
-                   (printr)
                    (inputs/lines)
                    (mapv #(if (re-find #"x" %)
                             ["x" (read-string (last (string/split % #"=")))]
@@ -84,8 +78,8 @@ fold along x=5"))
 (defn draw-dots [dots]
   (let [sizex (inc (apply max (map first dots)))
         sizey (inc (apply max (map second dots)))
-        emptymap  (vec (for [y (range sizey)]
-                         (vec (for [x (range sizex)] "."))))]
+        emptymap  (vec (for [_ (range sizey)]
+                         (vec (for [_ (range sizex)] "."))))]
     (->> (reduce (fn [m [x y]]
                    (assoc-in m [y x] "#"))
                  emptymap
