@@ -40,47 +40,9 @@ CN -> C"))
 
 ; Part 1
 
-(defn replace-pair [pair insertions]
-  (if (insertions pair)
-    (str (first pair) (insertions pair) (last pair))
-    pair))
-
-
-(defn step [template insertions]
-  (let [filled-out (->> (drop-last 1 template)
-                        (map-indexed (fn [ind char]
-                                       (let [pair (str char (nth template (inc ind)))]
-                                         (replace-pair pair insertions)))))]
-    (str (first filled-out) (string/join (map (comp string/join rest) (rest filled-out))))))
-
-(comment
-  (apply step test-input))
-
-(defn apply-steps-ntimes [template insertions n]
-  (reduce (fn [acc _] (step acc insertions))
-          template
-          (range n)))
-
-(defn high-minus-low [s]
-  (let [quantities (vals (frequencies s))]
-    (- (apply max quantities) (apply min quantities))))
-
-(comment
-  (let [[template insertions] test-input]
-    (-> (apply-steps-ntimes template insertions 10)
-        (high-minus-low)))
-
-  (let [[template insertions] input]
-    (-> (apply-steps-ntimes template insertions 10)
-        (high-minus-low))))
-; Answer = 2360
-
-
-; Part 2
-
-(defn template->pairs [template]
-  (->> (drop-last template)
-       (map-indexed (fn [ind char] (str char (nth template (inc ind)))))
+(defn string->pairs [s]
+  (->> (drop-last s)
+       (map-indexed (fn [ind char] (str char (nth s (inc ind)))))
        (frequencies)))
 
 (defn new-pairs
@@ -90,42 +52,39 @@ CN -> C"))
    {(str (first pair) (insertions pair)) occurances
     (str (insertions pair) (last pair)) occurances}))
 
-(defn step-2 [pairs insertions]
+(defn step [pairs insertions]
   (->> pairs
        (map (fn [[pair occurs]] (new-pairs insertions pair occurs)))
        (apply (partial merge-with +))))
 
-
-
-(defn apply-steps-ntimes-2 [pairs insertions n]
-  (reduce (fn [acc _] (step-2 acc insertions))
+(defn apply-steps-ntimes [pairs insertions n]
+  (reduce (fn [acc _] (step acc insertions))
           pairs
           (range n)))
 
-(comment
-  (let [[template insertions] test-input
-        pairs (template->pairs template)]
-    (= (apply-steps-ntimes-2 pairs insertions 10) 
-       (template->pairs (apply-steps-ntimes template insertions 10)))))
-
-
-(defn high-minus-low-2 [template pair-freqs]
+(defn high-minus-low [template pair-freqs]
   (let [char-freqs (->> (map (fn [[k v]] {(first k) v}) pair-freqs)
-                        (apply (partial merge-with +))
-                        )
-        quantities (-> char-freqs 
+                        (apply (partial merge-with +)))
+        quantities (-> char-freqs
                        (update (last template) inc)
                        (vals))]
     (- (apply max quantities) (apply min quantities))))
 
+(defn simulate [inp nsteps]
+  (let [[template insertions] inp
+        pairs (string->pairs template)]
+    (->> (apply-steps-ntimes pairs insertions nsteps)
+         (high-minus-low template))))
+
 (comment
-  (let [[template insertions] test-input
-        pairs (template->pairs template)]
-    (->> (apply-steps-ntimes-2 pairs insertions 40)
-         (high-minus-low-2 template)))
-  
-  (let [[template insertions] input
-        pairs (template->pairs template)]
-    (->> (apply-steps-ntimes-2 pairs insertions 40)
-         (high-minus-low-2 template))))
+  (simulate test-input 10)
+  (simulate input 10))
+; Answer = 2360
+
+
+; Part 2
+
+(comment
+  (simulate test-input 40)
+  (simulate input 40))
 ; Answer = 2967977072188
