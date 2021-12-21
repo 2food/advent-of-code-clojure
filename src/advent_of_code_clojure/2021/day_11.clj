@@ -2,7 +2,8 @@
   (:require [advent-of-code-clojure.inputs :as inputs]
             [clojure.string :as string]
             [clojure.set :as cset]
-            [clojure.pprint :as pprint]))
+            [clojure.pprint :as pprint]
+            [advent-of-code-clojure.utils :as utils]))
 
 (defn parse-input [s]
   (->> s
@@ -31,15 +32,6 @@
 ; Part 1
 
 
-(defn get-neighbours [m x y]
-  (let [all-possible (set (for [x (range (count (first m)))
-                                y (range (count m))]
-                            [x y]))
-        all-neighbours (set (for [x (range (dec x) (+ 2 x))
-                                  y (range (dec y) (+ 2 y))]
-                              [x y]))]
-    (cset/intersection all-possible all-neighbours)))
-
 (defn some-to-flash [m]
   (let [flatm (flatten m)]
     (when-let [n (some #(and (> % 9) %) flatm)]
@@ -53,7 +45,7 @@
               (some-to-flash)))
 
 (defn flash! [m [x y]]
-  (let [neighbours (get-neighbours m x y)
+  (let [neighbours (utils/get-neighbours-8 m x y)
         inc-if-not-flashed #(if (not= 0 %) (inc %) %)]
     (-> (reduce (fn [m [x y]]
                   (update-in m [y x] inc-if-not-flashed))
@@ -101,3 +93,4 @@
 (comment 
   (find-first-sync test-input)
   (find-first-sync input))
+; Ansewr = 517

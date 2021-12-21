@@ -1,6 +1,7 @@
 (ns advent-of-code-clojure.2021.day-9
   (:require [advent-of-code-clojure.inputs :as inputs]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [advent-of-code-clojure.utils :as utils]))
 
 (defn parse-input [s]
   (->> s
@@ -22,46 +23,18 @@
 
 ; Part 1
 
-(defn get-coord [m x y]
-  (nth (nth m y) x))
-
-(defn printr [x]
-  (println x)
-  x)
-
-(defn get-all-neighbours [m x y]
-  (let [maxx (dec (count (first m)))
-        maxy (dec (count m))]
-    (cond-> []
-      (> y 0) (conj [x (dec y)])
-      (< y maxy) (conj [x (inc y)])
-      (> x 0) (conj [(dec x) y])
-      (< x maxx) (conj [(inc x) y]))))
-
 (defn is-low-point? [m x y]
-  (let [this (get-coord m x y)]
-    (->> (get-all-neighbours m x y)
-         (map (fn [[x y]] (get-coord m x y)))
+  (let [this (utils/get-coord m x y)]
+    (->> (utils/get-neighbours-4 m x y)
+         (map (fn [[x y]] (utils/get-coord m x y)))
          (every? #(< this %)))))
-
-(comment
-  (is-low-point? test-input 6 4))
-
-(defn all-coords [m]
-  (let [xrange (range 0 (count (first m)))
-        yrange (range 0 (count m))]
-    (for [x xrange y yrange]
-      [x y])))
 
 (defn find-all-low-points [m]
   (filter (fn [[x y]] (is-low-point? m x y))
-          (all-coords m)))
-
-(comment
-  (find-all-low-points test-input))
+          (utils/all-coords m)))
 
 (defn risk-level [m x y]
-  (inc (get-coord m x y)))
+  (inc (utils/get-coord m x y)))
 
 (defn risk-of-all-low-points [m]
   (let [low-points (find-all-low-points m)]
@@ -79,9 +52,9 @@
   (loop [basin (set [low-point])]
     (let [new-basin (->> basin
                          (reduce (fn [acc [x y]]
-                                   (into acc (get-all-neighbours m x y)))
+                                   (into acc (utils/get-neighbours-4 m x y)))
                                  basin)
-                         (filter (fn [[x y]] (< (get-coord m x y) 9)))
+                         (filter (fn [[x y]] (< (utils/get-coord m x y) 9)))
                          (set))]
       (if (= basin new-basin)
         basin
