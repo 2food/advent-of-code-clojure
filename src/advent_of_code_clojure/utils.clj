@@ -1,5 +1,4 @@
-(ns advent-of-code-clojure.utils
-  (:require [clojure.set :as cset]))
+(ns advent-of-code-clojure.utils)
 
 ; Print
 (defn printr [x]
