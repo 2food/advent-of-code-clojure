@@ -1,7 +1,6 @@
 (ns advent-of-code-clojure.2021.day-18
   (:require [advent-of-code-clojure.inputs :as inputs]
-            [clojure.string :as string]
-            [advent-of-code-clojure.utils :as utils]))
+            [clojure.string :as string]))
 
 (defn build-tree [v]
   (if (number? v)
