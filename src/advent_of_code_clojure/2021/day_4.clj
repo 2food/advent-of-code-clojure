@@ -21,7 +21,7 @@
        (mapv read-board)))
 
 (def input
-  (let [all-input (-> (inputs/get-input-for-day 2021 4)
+  (let [all-input (-> (inputs/get-input-for-this-day)
                       (inputs/lines))
         drawn-nums (read-drawn all-input)
         boards (read-boards all-input)]

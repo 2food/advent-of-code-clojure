@@ -2,7 +2,7 @@
   (:require [advent-of-code-clojure.inputs :as inputs]))
 
 (def input  
-  (inputs/read-longs (inputs/get-input-for-day 2021 1)))
+  (inputs/read-longs (inputs/get-input-for-this-day)))
 
 ; Part 1
 

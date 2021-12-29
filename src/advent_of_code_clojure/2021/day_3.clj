@@ -3,7 +3,7 @@
             [clojure.string :as string]))
 
 (def input
-  (-> (inputs/get-input-for-day 2021 3)
+  (-> (inputs/get-input-for-this-day)
       (inputs/lines)))
 
 ; Part 1

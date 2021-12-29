@@ -15,24 +15,25 @@
          :body
          (spit (filename year day)))))
 
-(defn get-input-for-day
-  [year day]
+(defn get-input-for-day [year day]
   (let [file (filename year day)]
     (when (not (.exists (io/file file)))
       (download year day))
     (slurp file)))
 
-(comment
-  (get-input-for-day 2021 1))
+(defn get-input-for-this-day
+  "Gets the right input data by namespace."
+  []
+  (let [[_ year day] (re-matches #"advent-of-code-clojure\.(....)\.day-(.+)"
+                                 (str *ns*))]
+    (get-input-for-day year day)))
 
-(defn read-longs
-  [input]
+(defn read-longs [input]
   (->> input
        string/split-lines
        (map #(Long/parseLong %))))
 
-(defn lines
-  [input]
+(defn lines [input]
   (string/split-lines input))
 
 (defn words [input]

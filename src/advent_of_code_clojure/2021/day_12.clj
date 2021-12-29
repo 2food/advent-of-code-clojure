@@ -14,7 +14,7 @@
 
 (def input
   (parse-input
-   (inputs/get-input-for-day 2021 12)))
+   (inputs/get-input-for-this-day)))
 
 (def test-input
   (parse-input

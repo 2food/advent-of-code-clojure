@@ -3,7 +3,7 @@
 
 (def input
   (->>
-   (inputs/get-input-for-day 2021 2)
+   (inputs/get-input-for-this-day)
    (inputs/lines-and-words)
    (map (fn [[a b]] [a (Long/parseLong b)]))))
 

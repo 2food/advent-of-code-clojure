@@ -13,7 +13,7 @@
        (mapv (partial mapv read-point))))
 
 (def input
-  (->> (inputs/get-input-for-day 2021 5)
+  (->> (inputs/get-input-for-this-day)
        (parse-input)))
 
 (def test-input

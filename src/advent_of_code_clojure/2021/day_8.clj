@@ -12,7 +12,7 @@
           lines)))
 
 (def input
-  (-> (inputs/get-input-for-day 2021 8)
+  (-> (inputs/get-input-for-this-day)
       (parse-input)))
 
 (def test-input

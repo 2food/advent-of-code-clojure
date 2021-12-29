@@ -28,7 +28,7 @@
 
 (def input
   (parse-input
-   (inputs/get-input-for-day 2021 16)))
+   (inputs/get-input-for-this-day)))
 
 (def test-literal (parse-input "D2FE28"))
 (def test-operator-1 (parse-input "8A004A801A8002F478"))

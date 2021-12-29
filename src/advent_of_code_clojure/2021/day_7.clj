@@ -7,7 +7,7 @@
        (mapv read-string)))
 
 (def input
-  (-> (inputs/get-input-for-day 2021 7)
+  (-> (inputs/get-input-for-this-day)
       (parse-input)))
 
 
