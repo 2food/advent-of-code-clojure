@@ -22,10 +22,8 @@
   (parse-input
    (inputs/get-input-for-this-day)))
 
-; Part 1
 
-(defn reapply [fun ntimes start]
-  (reduce (fn [res _] (fun res)) start (range ntimes)))
+; Part 1
 
 (defn flip [flipz point]
   (mapv (fn [p f] (if (>= f 0) p (- p))) point flipz))
@@ -35,9 +33,9 @@
           (roty [[x y z]] [(- z) y (- x)])
           (rotz [[x y z]] [y (- x) z])]
     (->> point
-         (reapply rotx (Math/abs rx))
-         (reapply roty (Math/abs ry))
-         (reapply rotz (Math/abs rz))
+         (utils/reapply rotx (Math/abs rx))
+         (utils/reapply roty (Math/abs ry))
+         (utils/reapply rotz (Math/abs rz))
          (flip rot))))
 
 (defn rotate-list [plist rot]
@@ -123,8 +121,8 @@
   (loop [universe (set (:beacons (first inp)))
          scanners (rest inp)
          found-scanners []]
-    (println "Sice of universe = " (count universe))
-    (println "Scanner remaining = " (count scanners))
+    (println "Size of universe = " (count universe))
+    (println "Scanners remaining = " (count scanners))
     (if (not-empty scanners)
       (let [valids (valid-to-add universe scanners)
             new-universe (cset/union universe
@@ -135,8 +133,8 @@
         (recur new-universe new-scanners new-found-scanners))
       [universe found-scanners])))
 
-(comment 
-  (let [[universe found-scanners] (merge-universe input)]
+(comment
+  (let [[universe _] (merge-universe input)]
     (count universe)))
 ; Answer = 320
 
@@ -146,3 +144,17 @@
 (defn man-dist [p1 p2]
   (reduce + (map - p1 p2)))
 
+(defn scanner-location [found-scanner]
+  (get-in found-scanner [:transform 1]))
+
+(defn find-longest-scanner-dist [found-scanners]
+  (->> found-scanners
+       (map scanner-location)
+       (all-pairs)
+       (map (fn [[p1 p2]] (man-dist p1 p2)))
+       (apply max)))
+
+(comment 
+  (let [[_ found-scanners] (merge-universe input)]
+   (find-longest-scanner-dist found-scanners)))
+; Answer = 9655

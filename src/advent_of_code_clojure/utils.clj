@@ -1,5 +1,8 @@
 (ns advent-of-code-clojure.utils)
 
+(defn reapply [fun ntimes start]
+  (reduce (fn [res _] (fun res)) start (range ntimes)))
+
 ; Print
 (defn printr [x]
   (println x)

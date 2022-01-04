@@ -205,9 +205,10 @@
 
 
 
-(deftest merge-universe
-  (let [[test-universe _] (day/merge-universe test-input)]
-    (is (= 79 (count test-universe)))))
-
-(deftest manhattan-distance 
+(deftest manhattan-distance
   (is (= 3621 (day/man-dist [1105 -1205 1229] [-92 -2380 -20]))))
+
+(deftest merge-universe
+  (let [[test-universe found-scanners] (day/merge-universe test-input)]
+    (is (= 79 (count test-universe)))
+    (is (= 3621 (day/find-longest-scanner-dist found-scanners)))))
