@@ -1,7 +1,6 @@
 (ns advent-of-code-clojure.2021.day-20
   (:require [advent-of-code-clojure.inputs :as inputs]
             [clojure.string :as string]
-            [clojure.set :as cset]
             [advent-of-code-clojure.utils :as utils]))
 
 
