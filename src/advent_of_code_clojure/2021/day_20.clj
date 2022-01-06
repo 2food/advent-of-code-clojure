@@ -64,7 +64,7 @@
     all-neighbours))
 
 (comment
-  (let [{:keys [algorithm image]} test-input]
+  (let [{:keys [_ image]} test-input]
     (get-region image 1 1)))
 
 (defn pad-image [m]
@@ -99,7 +99,7 @@
   (let [write-image (pad-image image)
         read-image (pad-image write-image)]
     (vec (map-indexed (fn [y row]
-                        (vec (map-indexed (fn [x i]
+                        (vec (map-indexed (fn [x _]
                                             (determine-bit algo read-image (inc x) (inc y)))
                                           row)))
                       write-image))))

@@ -1,7 +1,7 @@
 (ns advent-of-code-clojure.2021.day-21
   (:require [advent-of-code-clojure.inputs :as inputs]
             [clojure.string :as string]
-            [advent-of-code-clojure.utils :as utils]))
+            [clojure.core.reducers :as r]))
 
 (defn get-starting-num [s]
   (read-string (str (last (re-find #"position: (\d+)" s)))))
@@ -46,11 +46,15 @@ Player 2 starting position: 8"))
 (defn sum-three-rolls [die]
   (reduce + (for [_ (range 3)] (roll die))))
 
-(defn circular-board []
+(def circular-board
   (flatten (repeat (range 1 11))))
 
+(def mem-get-pos
+  (memoize (fn [pos rolls]
+             (last (take (+ pos rolls) circular-board)))))
+
 (defn add-pos [{:keys [pos] :as player} rolls]
-  (let [pos (last (take (+ pos rolls) (circular-board)))]
+  (let [pos (mem-get-pos pos rolls)]
     (assoc player :pos pos)))
 
 (defn update-pos-and-score [player rolls]
@@ -96,3 +100,51 @@ Player 2 starting position: 8"))
 
 ; Part 2
 
+(def rolls
+  (let [options (range 1 4)]
+    (for [a options b options c options]
+     [a b c])))
+
+(def roll-sums
+  (map #(reduce + %) rolls))
+
+(def roll-sum-freqs
+  (frequencies roll-sums))
+
+(def finish-line 21)
+
+(defn any-quantum-winner? [{:keys [p1 p2]}]
+  (or (and (>= (:score p1) finish-line) :p1)
+      (and (>= (:score p2) finish-line) :p2)))
+
+(defn quantum-turn [players rolls current]
+  (update players current #(update-pos-and-score % rolls)))
+
+(defn merge+
+  ([] {})
+  ([mapa mapb]
+   (merge-with + mapa mapb)))
+
+(def change-player {:p1 :p2 :p2 :p1})
+
+(defn perform-quantum-game [players times current]
+  (if-let [winner-key (any-quantum-winner? players)]
+    [{winner-key times}]
+    (letfn [(mapfn
+              ([[k v]] (mapfn k v))
+              ([k v]
+               (perform-quantum-game (quantum-turn players k current)
+                                     (* v times)
+                                     (change-player current))))]
+      (r/mapcat mapfn roll-sum-freqs))))
+
+(defn start-quantum-game [players]
+  (r/fold merge+
+          (perform-quantum-game players 1 :p1)))
+
+(comment
+  (time (start-quantum-game test-input)))
+
+(comment
+  (time (start-quantum-game input)))
+; Answer = 157595953724471
