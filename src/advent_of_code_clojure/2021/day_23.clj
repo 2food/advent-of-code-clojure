@@ -219,7 +219,7 @@
       (assoc :d2 "A" :d3 "C")))
 
 (def unfolded-test-input 
-  (unfold test-input))(
+  (unfold test-input))
 
 (def unfolded-input
   (unfold input))
