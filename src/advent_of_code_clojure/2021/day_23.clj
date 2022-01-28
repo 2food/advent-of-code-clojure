@@ -1,9 +1,6 @@
 (ns advent-of-code-clojure.2021.day-23
   (:require [advent-of-code-clojure.inputs :as inputs]
-            [clojure.string :as string]
-            [clojure.core.reducers :as r]
-            [advent-of-code-clojure.utils :as utils]
-            [clojure.set :as cset]))
+            [clojure.string :as string]))
 
 (def amphipod-map
   {:h1  [:h2]
@@ -187,12 +184,6 @@
             (recur (into winning-states
                          (remove #(> (:energy %) (:energy best-won))
                                  new-states)))))))))
-
-(def simple-test-input
-  {:a1 "A" :a2 nil :h1 "A" :b1 "B" :b2 "B"
-   :c1 "C" :c2 "D" :d1 "D" :d2 "C"
-   :energy 0
-   :moves []})
 
 (comment
   (time (lowest-energy (simulate test-input)))

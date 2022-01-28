@@ -1,7 +1,6 @@
 (ns advent-of-code-clojure.2021.day-22
   (:require [advent-of-code-clojure.inputs :as inputs]
             [clojure.string :as string]
-            [advent-of-code-clojure.utils :as utils]
             [clojure.set :as cset]))
 
 (defn parse-line [l]
