@@ -2,6 +2,6 @@
 
 My clojure solutions to the Advent of Code problems.
 
-Currently only for:
-- 2018
+Solved so far:
+- 2018 (only partial)
 - 2021
