@@ -223,6 +223,7 @@
    :energy 0
    :moves []})
 
+#_{:clj-kondo/ignore [:redefined-var]}
 (defn pod->target-rooms [state pod]
   (when pod
     (let [[r1 r2 r3 r4] (mapv #(keyword (str (string/lower-case pod) %)) [1 2 3 4])]
@@ -231,6 +232,7 @@
         (and (= (r4 state) pod) (= (r3 state) pod)) (conj r2)
         (and (= (r4 state) pod) (= (r3 state) pod) (= (r2 state) pod)) (conj r1)))))
 
+#_{:clj-kondo/ignore [:redefined-var]}
 (defn can-move [state spot]
   (when (not (winning-position? state spot))
     (->> (spot unfolded-amphipod-map)

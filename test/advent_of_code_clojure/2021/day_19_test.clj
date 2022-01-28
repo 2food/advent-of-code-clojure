@@ -1,7 +1,6 @@
 (ns advent-of-code-clojure.2021.day-19-test
   (:require [clojure.test :refer [is deftest]]
-            [advent-of-code-clojure.2021.day-19 :as day]
-            [advent-of-code-clojure.utils :as utils]))
+            [advent-of-code-clojure.2021.day-19 :as day]))
 
 (def dif-facing-input
   (day/parse-input
