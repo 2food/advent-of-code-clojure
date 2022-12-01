@@ -7,7 +7,7 @@
   (str "resources/inputs/" year "/day" day ".txt"))
 
 (def aoc-session 
-  "53616c7465645f5fdf24638511d44ee8e78307c50af488d6234256c3a826dc9b5a480c05480e96c508dea4f3bc013c59")
+  "53616c7465645f5f91e0ab2e65b14f268c2146e494db0bbc9daf393ac4caba251a506c21bae8c4954b5d9fb521ec7919214948584a3509bacfd742342b6dd747")
 
 (defn- download [year day]
   (let [url (str "https://adventofcode.com/" year "/day/" day "/input")
