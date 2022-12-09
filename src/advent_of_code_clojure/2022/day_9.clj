@@ -14,7 +14,7 @@
 
 ;; Part 1
 
-(def initial-state {:head           {:pos [0 0] :followed-by :tail}
+(def initial-state {:head           {:pos [0 0] :next :tail}
                     :tail           {:pos [0 0]}
                     :tail-positions #{[0 0]}})
 
@@ -27,21 +27,20 @@
 (defn inc-or-dec [n] (if (pos-int? n) inc dec))
 
 (defn move-tail [state head-key]
-  (let [{head-pos :pos tail-key :followed-by} (head-key state)
-        {tail-pos :pos next-key :followed-by} (tail-key state)
+  (let [{head-pos :pos tail-key :next} (get state head-key)
+        {tail-pos :pos next-key :next} (get state tail-key)
         [dx dy] (pos-diff head-pos tail-pos)
         state (cond
                 (and (<= (abs dx) 1) (<= (abs dy) 1)) state
-                (and (> (abs dx) 1) (= (abs dy) 0)) (as-> state $
-                                                          (update-in $ [tail-key :pos 0] (inc-or-dec dx)))
-                (and (= (abs dx) 0) (> (abs dy) 1)) (as-> state $
-                                                          (update-in $ [tail-key :pos 1] (inc-or-dec dy)))
-                :else (as-> state $
-                            (update-in $ [tail-key :pos 0] (inc-or-dec dx))
-                            (update-in $ [tail-key :pos 1] (inc-or-dec dy))))]
+                (and (> (abs dx) 1) (= (abs dy) 0)) (update-in state [tail-key :pos 0] (inc-or-dec dx))
+                (and (= (abs dx) 0) (> (abs dy) 1)) (update-in state [tail-key :pos 1] (inc-or-dec dy))
+                :else (-> state
+                          (update-in [tail-key :pos 0] (inc-or-dec dx))
+                          (update-in [tail-key :pos 1] (inc-or-dec dy))))]
     (if next-key
       (move-tail state tail-key)
-      (update state :tail-positions conj (get-in state [tail-key :pos])))))
+      (let [new-tail-pos (get-in state [tail-key :pos])]
+        (update state :tail-positions conj new-tail-pos)))))
 
 (defn do-steps [state steps]
   (reduce (fn [state step-fn]
@@ -51,11 +50,12 @@
           steps))
 
 (defn move [state command]
-  (match command
-    ["U" n] (do-steps state (repeat n step-up))
-    ["R" n] (do-steps state (repeat n step-right))
-    ["D" n] (do-steps state (repeat n step-down))
-    ["L" n] (do-steps state (repeat n step-left))))
+  (let [steps (match command
+                ["U" n] (repeat n step-up)
+                ["R" n] (repeat n step-right)
+                ["D" n] (repeat n step-down)
+                ["L" n] (repeat n step-left))]
+    (do-steps state steps)))
 
 (comment
   (->> (reduce move initial-state test-input)
@@ -70,16 +70,16 @@
 
 ;; Part 2
 
-(def longer-state {:head           {:pos [0 0] :followed-by :1}
-                   :1              {:pos [0 0] :followed-by :2}
-                   :2              {:pos [0 0] :followed-by :3}
-                   :3              {:pos [0 0] :followed-by :4}
-                   :4              {:pos [0 0] :followed-by :5}
-                   :5              {:pos [0 0] :followed-by :6}
-                   :6              {:pos [0 0] :followed-by :7}
-                   :7              {:pos [0 0] :followed-by :8}
-                   :8              {:pos [0 0] :followed-by :9}
-                   :9              {:pos [0 0]}
+(def longer-state {:head           {:pos [0 0] :next 1}
+                   1               {:pos [0 0] :next 2}
+                   2               {:pos [0 0] :next 3}
+                   3               {:pos [0 0] :next 4}
+                   4               {:pos [0 0] :next 5}
+                   5               {:pos [0 0] :next 6}
+                   6               {:pos [0 0] :next 7}
+                   7               {:pos [0 0] :next 8}
+                   8               {:pos [0 0] :next 9}
+                   9               {:pos [0 0]}
                    :tail-positions #{[0 0]}})
 
 (comment
