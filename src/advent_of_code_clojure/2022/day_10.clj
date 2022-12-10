@@ -41,44 +41,35 @@
        (reduce (fn [xs cycle-fn] (conj xs (cycle-fn (last xs)))) [initial-x initial-x])
        (vec)))
 
+(defn calc-vals [instructions]
+  (let [cycle-vec (cycle-vec instructions)]
+    (->> (range 20 221 40)
+         (map #(* (nth cycle-vec %) %))
+         (reduce +))))
+
 (comment
   (cycle-vec small-input)
 
-  (let [cycle-vec (cycle-vec test-input)]
-    (->> (range 20 221 40)
-         (map #(* (nth cycle-vec %) %))
-         (reduce +)))
-
-  (let [cycle-vec (cycle-vec input)]
-    (->> (range 20 221 40)
-         (map #(* (nth cycle-vec %) %))
-         (reduce +)))
-
+  (calc-vals test-input)
+  (calc-vals input)
   ; Answer = 12560
   )
 
 ;; Part 2
 
+(defn draw-screen [instructions]
+  (->> (drop-last (rest (cycle-vec instructions)))
+       (map (fn [write-pos sprite-pos]
+              (if (<= (abs (- sprite-pos write-pos)) 1)
+                \#
+                \.))
+            (cycle (range 0 40)))
+       (partition-all 40)
+       (map string/join)))
 
 (comment
-  (->> (drop-last (rest (cycle-vec test-input)))
-       (map (fn [write-pos sprite-pos]
-              (if (<= (abs (- sprite-pos write-pos)) 1)
-                \#
-                \.))
-            (cycle (range 0 40)))
-       (partition-all 40)
-       (map string/join))
-
-  (->> (drop-last (rest (cycle-vec input)))
-       (map (fn [write-pos sprite-pos]
-              (if (<= (abs (- sprite-pos write-pos)) 1)
-                \#
-                \.))
-            (cycle (range 0 40)))
-       (partition-all 40)
-       (map string/join))
+  (draw-screen test-input)
+  (draw-screen input)
   ; Answer = PLPAFBCL
-
   ) 
 
