@@ -53,8 +53,16 @@
 
 ;; Part 2
 
+(def test-packets  (conj (apply concat test-input) [[2]] [[6]]))
+(def packets (conj (apply concat input) [[2]] [[6]]))
+
+(defn index-of [e coll]
+  (.indexOf coll e))
 
 (comment
+  (let [sorted (sort-by identity right-order? packets)]
+    (* (inc (index-of [[2]] sorted))
+       (inc (index-of [[6]] sorted))))
 
   ) 
 
