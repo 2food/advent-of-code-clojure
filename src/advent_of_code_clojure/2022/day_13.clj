@@ -26,12 +26,10 @@
        (= -1)))
 
 (defn sum-order-indices [input]
-  (->> (map-indexed vector input)
-       (reduce (fn [s [ind [a b]]]
-                 (if (right-order? a b)
-                   (conj s (inc ind))
-                   s))
-               #{})
+  (->> (keep-indexed (fn [ind [a b]]
+                       (when (right-order? a b)
+                         (inc ind)))
+                     input)
        (reduce +)))
 
 (comment
@@ -53,7 +51,7 @@
 
 ;; Part 2
 
-(def test-packets  (conj (apply concat test-input) [[2]] [[6]]))
+(def test-packets (conj (apply concat test-input) [[2]] [[6]]))
 (def packets (conj (apply concat input) [[2]] [[6]]))
 
 (defn index-of [e coll]
