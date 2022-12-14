@@ -60,9 +60,9 @@
   (.indexOf coll e))
 
 (comment
-  (let [sorted (sort-by identity right-order? packets)]
+  (let [sorted (sort right-order? packets)]
     (* (inc (index-of [[2]] sorted))
        (inc (index-of [[6]] sorted))))
-
+  ; Answer = 19570
   ) 
 
