@@ -11,7 +11,7 @@
      (let [f (str "src/advent_of_code_clojure/" year "/day_" d ".clj")]
        (io/make-parents f)
        (spit f
-             (str "(ns advent-of-code-clojure.2022.day-" d "
+             (str "(ns advent-of-code-clojure." year ".day-" d "
   (:require [advent-of-code-clojure.inputs :as inputs]))
 
 (def input
@@ -31,10 +31,6 @@
 "))))))
 
 (comment
-  (new-year!))
+  (new-year!)
+  )
 
-#_{:clj-kondo/ignore [:unused-binding]}
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))

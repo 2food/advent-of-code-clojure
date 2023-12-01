@@ -6,12 +6,12 @@
 (defn filename [year day]
   (str "resources/inputs/" year "/day" day ".txt"))
 
-(def aoc-session 
-  "53616c7465645f5f91e0ab2e65b14f268c2146e494db0bbc9daf393ac4caba251a506c21bae8c4954b5d9fb521ec7919214948584a3509bacfd742342b6dd747")
+(def aoc-session-cookie
+  "53616c7465645f5f9b2a3c5fc88d9b0d0578d4488b3c99dc7f0f13c0604fb20bdc18275907b3d3109e24204fc64f1027d674398452cafb5883fe5ea6b43ae4f2")
 
 (defn- download [year day]
   (let [url (str "https://adventofcode.com/" year "/day/" day "/input")
-        req {:cookies {"session" {:value aoc-session}}}]
+        req {:cookies {"session" {:value aoc-session-cookie}}}]
     (->> (client/get url req)
          :body
          (spit (filename year day)))))
