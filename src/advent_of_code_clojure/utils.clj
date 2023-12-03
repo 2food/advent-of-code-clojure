@@ -8,6 +8,14 @@
   (println x)
   x)
 
+(defmacro capture-env
+  ([]
+   `(capture-env ~@(keys &env)))
+  ([& symbols]
+   (cons 'do
+         (map (fn [local]
+                `(def ~local ~local))
+              symbols))))
 
 ; Matrix stuff 
 
