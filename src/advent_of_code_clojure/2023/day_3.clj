@@ -16,7 +16,7 @@
 
 ;; Part 1
 
-(def num-chars (set "123456789"))
+(def num-chars (set "0123456789"))
 (def not-symbol (set/union #{\.} num-chars))
 
 (defn symbol-indices [input]
@@ -59,14 +59,41 @@
          (map first)
          (reduce +)))
 
-  ; Too low = 453032
+  ; Answer = 533784
 
   )
 
 ;; Part 2
 
 
+(defn adjacent-nums [nums [x y]]
+  (keep (fn [[num coords]]
+          (when (not-empty (set/intersection coords (utils/get-neighbours-8 input x y)))
+            num))
+        nums))
+
 (comment
+
+  (let [input example
+        nums (num-index input)]
+    (->> (symbol-indices input)
+         (filter (fn [[x y]]
+                   (and (= \* (utils/get-coord input x y))
+                        (= 2 (count (adjacent-nums nums [x y]))))))
+         (map (fn [[x y]]
+                (apply * (adjacent-nums nums [x y]))))
+         (reduce +)))
+
+  (let [nums (num-index input)]
+    (->> (symbol-indices input)
+         (filter (fn [[x y]]
+                   (and (= \* (utils/get-coord input x y))
+                        (= 2 (count (adjacent-nums nums [x y]))))))
+         (map (fn [[x y]]
+                (apply * (adjacent-nums nums [x y]))))
+         (reduce +)))
+
+  ; Answer = 78826761
 
   )
 
