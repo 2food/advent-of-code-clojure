@@ -1,5 +1,6 @@
 (ns advent-of-code-clojure.2023.day-5
   (:require [advent-of-code-clojure.inputs :as inputs]
+            [clojure.set :as set]
             [clojure.string :as str]))
 
 (defn parse-mapping [mapping]
@@ -77,8 +78,8 @@ humidity-to-location map:
 
 (defn seed-to-location [input seed-num]
   (map-chain seed-num ((juxt :seed-to-soil :soil-to-fertilizer :fertilizer-to-water :water-to-light
-                       :light-to-temperature :temperature-to-humidity :humidity-to-location)
-                 input)))
+                             :light-to-temperature :temperature-to-humidity :humidity-to-location)
+                       input)))
 
 (comment
 
@@ -98,22 +99,43 @@ humidity-to-location map:
 ;; Part 2
 
 
-(defn expand-seeds [seeds]
-  (->> (partition 2 seeds)
-       (mapcat (fn [[start n]] (range start (+ start n))))))
+(defn reverse-mapping [mapping]
+  (map #(set/rename-keys % {:source :dest :dest :source}) mapping))
+
+(defn location-to-seed [input loc-num]
+  (->> input
+       ((juxt :humidity-to-location :temperature-to-humidity :light-to-temperature :water-to-light
+              :fertilizer-to-water :soil-to-fertilizer :seed-to-soil))
+       (map reverse-mapping)
+       (map-chain loc-num)))
+
+(defn in-seed-ranges? [input seed-ranges loc-num]
+  (when (some (fn [[start n]]
+                (let [seed-num (location-to-seed input loc-num)]
+                  (and (<= start seed-num)
+                       (<= seed-num (+ start n))
+                       seed-num)))
+              seed-ranges)
+    loc-num))
 
 (comment
 
-  (let [input example]
-    (->> (:seeds input)
-         (expand-seeds)
-         (apply min-key (partial seed-to-location input))
-         (seed-to-location input)))
+  (let [input       example
+        seed-ranges (partition 2 (:seeds input))]
+    (->> (range 100)
+         (map (partial in-seed-ranges? input seed-ranges))
+         (filter some?)
+         (first)))
 
-  (->> (:seeds input)
-       (expand-seeds))
-  (apply min-key (partial seed-to-location input))
-  (seed-to-location input)
+  (do (prn (str (java.time.LocalDateTime/now)))
+      (time (let [seed-ranges (partition 2 (:seeds input))]
+              (->> (range)
+                   (pmap (partial in-seed-ranges? input seed-ranges))
+                   (filter some?)
+                   (first)))))
+
+  ; Answer = 11554135
+  ; Took 1.5 hours to compute so not exatcly ideal.
 
   )
 
