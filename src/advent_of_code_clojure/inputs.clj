@@ -29,11 +29,6 @@
                                  (str *ns*))]
     (get-input-for-day year day)))
 
-(defn read-longs [input]
-  (->> input
-       string/split-lines
-       (map #(Long/parseLong %))))
-
 (defn lines [input]
   (string/split-lines input))
 
@@ -44,3 +39,13 @@
   (->> input
        (lines)
        (map words)))
+
+(defn read-longs [input]
+  (->> input
+       (lines)
+       (map parse-long)))
+
+(defn read-matrix [input]
+  (->> input
+       (lines-and-words)
+       (mapv #(mapv parse-long %))))
