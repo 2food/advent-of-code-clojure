@@ -54,3 +54,7 @@
   (apply mapv vector m))
 
 (defn something [pred coll] (some #(and (pred %) %) coll))
+
+(defn out-of-bounds? [m [x y]]
+  (or (not (< -1 x (count (first m))))
+      (not (< -1 y (count m)))))
