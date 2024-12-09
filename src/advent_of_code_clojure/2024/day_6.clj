@@ -111,6 +111,6 @@
 
   (time (find-loop-causing-placements input))
 
-  ; Too low = 1663
+  ; Answer = 1663
 
   )
