@@ -106,7 +106,7 @@
                                    (keep-indexed (fn [idx m] (when (= m n) idx)) expanded))}))
                   (apply merge))}))
 
-(defn segments->disk [{:keys [spaces files]}]
+(defn de-segment [{:keys [spaces files]}]
   (let [disk (vec (repeat (apply max (concat (flatten (vals spaces))
                                              (flatten (vals files)))) nil))]
     (reduce (fn [disk [file-id file-segment]]
@@ -121,7 +121,7 @@
 
   (def expanded (expand-format input))
   (def segments (segment-format expanded))
-  (= expanded (segments->disk segments))
+  (= expanded (de-segment segments))
 
   (def file-ids (reverse (sort (keys (:files segments)))))
 
@@ -143,7 +143,7 @@
                         :files  (assoc files file-id new-file-segment)}))))
                segments
                file-ids)
-       (segments->disk)
+       (de-segment)
        (checksum))
 
   ; Answer = 6287317016845
