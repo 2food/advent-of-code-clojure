@@ -7,7 +7,7 @@
   (str "resources/inputs/" year "/day" day ".txt"))
 
 (def aoc-session-cookie
-  "53616c7465645f5f94990675d9155944feb071b5c014544d62419a863bfbff0640e0311a700ac4219723b4e152d82c87121bd59783ee8057da59dc02df600af1")
+  "53616c7465645f5f3c0778dd4af78536483bce133292d0b17b9af3487bb9d0c4631f75e63d32f75342d3e54cb4e125d02d4fc520b013ba76dee173c8086c202f")
 
 (defn- download [year day]
   (let [url (str "https://adventofcode.com/" year "/day/" day "/input")
