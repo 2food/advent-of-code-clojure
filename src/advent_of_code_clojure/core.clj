@@ -7,7 +7,7 @@
   ([] (new-year! (.getValue (Year/now))))
   ([year]
    (io/make-parents (str "resources/inputs/" year "/whatever"))
-   (doseq [d (range 1 26)]
+   (doseq [d (range 1 13)]
      (let [f (str "src/advent_of_code_clojure/" year "/day_" d ".clj")]
        (io/make-parents f)
        (spit f
