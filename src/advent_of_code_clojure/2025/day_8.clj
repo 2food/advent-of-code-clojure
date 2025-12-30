@@ -1,7 +1,6 @@
 (ns advent-of-code-clojure.2025.day-8
   (:require [advent-of-code-clojure.inputs :as inputs]
             [advent-of-code-clojure.utils :as utils]
-            [clojure.pprint :as pprint]
             [clojure.set :as set]
             [clojure.string :as str]))
 
@@ -18,49 +17,47 @@
 ;; Part 1
 
 
-(defn init-circuits [input]
-  (into {} (map (fn [p] [p #{p}]) input)))
+(defn get-circuit [circuits p]
+  (or (first (filter #(contains? % p) circuits))
+      #{p}))
 
-(defn connect-pair [circuits a b]
-  (let [new-circuit (set/union (circuits a) (circuits b))]
-    (reduce (fn [acc key] (update acc key set/union new-circuit)) circuits new-circuit)))
+(defn connect-pair [circuits [a b]]
+  (let [a-circuit (get-circuit circuits a)
+        b-circuit (get-circuit circuits b)]
+    (conj (set/difference circuits #{a-circuit} #{b-circuit})
+          (set/union a-circuit b-circuit))))
 
 (defn all-pairs [input]
   (->> input
-       (mapcat (fn [p] (->> input
-                            (keep #(when (not= p %) (hash-set p %))))))
+       (mapcat (fn [p] (keep #(when (not= p %)
+                                (hash-set p %))
+                             input)))
        (set)
        (map vec)
        (sort-by #(apply utils/distance %))))
 
-(defn run [input steps]
-  (let [pairs (all-pairs input)]
-    (loop [circuits (init-circuits input)
-           pairs    pairs
-           counter  0]
-      (if (< counter steps)
-        (let [pair      (first pairs)
-              new-state (apply connect-pair circuits pair)]
-          (recur new-state (rest pairs) (inc counter)))
-        circuits))))
+(defn run [pairs steps]
+  (loop [circuits #{}
+         pairs    pairs
+         counter  0]
+    (if (< counter steps)
+      (recur (connect-pair circuits (first pairs))
+             (rest pairs)
+             (inc counter))
+      circuits)))
 
 (comment
 
-  (all-pairs example-input)
-
-  (->> (run example-input 10)
-       (vals)
-       (set)
+  (def example-pairs (all-pairs example-input))
+  (->> (run example-pairs 10)
        (map count)
        (sort-by -)
        (take 3)
        (reduce *))
 
-  (def res (run input 1000))
 
-  (->> res
-       (vals)
-       (set)
+  (def pairs (all-pairs input))
+  (->> (run pairs 1000)
        (map count)
        (sort-by -)
        (take 3)
@@ -72,26 +69,29 @@
 ;; Part 2
 
 
-(defn run2 [input]
-  (let [pairs (all-pairs input)]
-    (loop [state (init-circuits input)
-           pairs pairs]
-      (when (= 0 (mod (count pairs) 1000))
-        (prn (count pairs)))
-      (if-let [pair (first pairs)]
-        (let [new-state (apply connect-pair state pair)]
-          (if (apply = (vals (:circuits new-state)))
-            pair
-            (recur new-state (rest pairs))))
-        state))))
+(defn run2 [pairs]
+  (let [point-count (count (set (apply concat pairs)))]
+    (loop [circuits #{}
+           pairs    pairs]
+      (let [pair         (first pairs)
+            new-circuits (connect-pair circuits pair)]
+        (if (and (= 1 (count new-circuits))
+                 (= point-count (count (first new-circuits))))
+          pair
+          (recur new-circuits (rest pairs)))))))
 
 (comment
 
-  (let [[a b] (run2 example-input)]
+
+  (def example-pairs (all-pairs example-input))
+  (let [[a b] (run2 example-pairs)]
     (* (first a) (first b)))
 
-  (let [[a b] (run2 input)]
+  (def pairs (all-pairs input))
+  (let [[a b] (run2 pairs)]
     (* (first a) (first b)))
+
+  ; Answer = 2435100380
 
   )
 
