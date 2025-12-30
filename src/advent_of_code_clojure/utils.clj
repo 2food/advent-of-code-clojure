@@ -1,4 +1,5 @@
-(ns advent-of-code-clojure.utils)
+(ns advent-of-code-clojure.utils
+  (:require [clojure.math :as math]))
 
 (defn reapply [fun ntimes start]
   (reduce (fn [res _] (fun res)) start (range ntimes)))
@@ -58,3 +59,13 @@
 (defn out-of-bounds? [m [x y]]
   (or (not (< -1 x (count (first m))))
       (not (< -1 y (count m)))))
+
+(defn distance
+  "General euclidean distance between two n-dimension points"
+  [a b]
+  (->> (map -
+            (map rationalize a)
+            (map rationalize b))
+       (map #(* % %))
+       (reduce +)
+       (math/sqrt)))
